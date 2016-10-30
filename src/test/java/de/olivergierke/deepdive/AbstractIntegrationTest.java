@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.initializer.ConfigFileApplicationContextInitializer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -34,16 +35,15 @@ import org.springframework.transaction.annotation.Transactional;
  * @since Step 1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ApplicationConfig.class)
 @Transactional
+@ContextConfiguration(classes = ApplicationConfig.class, initializers = ConfigFileApplicationContextInitializer.class)
 public abstract class AbstractIntegrationTest {
 
-	@Autowired
-	DataSource dataSource;
+	@Autowired DataSource dataSource;
 
 	@Before
 	public void populateDatabase() {
-
+		System.out.println("Populating database");
 		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 		populator.addScript(new ClassPathResource("data.sql"));
 		DatabasePopulatorUtils.execute(populator, dataSource);

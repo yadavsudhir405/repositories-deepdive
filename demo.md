@@ -86,7 +86,7 @@ __Objective:__ Learn how to define atomic business predicates and execute them i
   - Show generated query classes
   - Add `QuerydslPredicateExecutor`
   - Show usage in test case
-  
+
 # Step 9 - Custom implementation for  repositories
 
 __Objective:__ Lear how to extend a repository with manually implemented code.
