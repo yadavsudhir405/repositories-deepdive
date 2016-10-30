@@ -15,39 +15,42 @@
  */
 package de.olivergierke.deepdive;
 
-import javax.sql.DataSource;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
-import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.initializer.ConfigFileApplicationContextInitializer;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Abstract integration test to populate the database with dummy data.
+ * Integration test to show customized transaction configuration in {@link CustomerRepository}.
  * 
+ * @since Step 5.2
  * @author Oliver Gierke
- * @since Step 1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
 @ContextConfiguration(classes = ApplicationConfig.class, initializers = ConfigFileApplicationContextInitializer.class)
-public abstract class AbstractIntegrationTest {
+@DirtiesContext
+public class CustomerRepositoryTransactionReconfigurationIntegrationTest {
 
-	@Autowired DataSource dataSource;
+	@Autowired CustomerRepository repository;
 
-	@Before
-	public void populateDatabase() {
-		System.out.println("Populating database");
+	/**
+	 * @since Step 5.2
+	 */
+	@Test
+	public void executesRedeclaredMethodWithCustomTransactionConfiguration() {
 
+		Customer customer = new Customer("Dave", "Matthews");
+		Customer result = repository.save(customer);
 
-		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-		populator.addScript(new ClassPathResource("data.sql"));
-		DatabasePopulatorUtils.execute(populator, dataSource);
+		assertThat(result, is(notNullValue()));
+		assertThat(result.getId(), is(notNullValue()));
+		assertThat(result.getFirstname(), is("Dave"));
+		assertThat(result.getLastname(), is("Matthews"));
 	}
 }

@@ -15,18 +15,19 @@
  */
 package de.olivergierke.deepdive;
 
-import org.junit.Test;
+import java.math.BigDecimal;
 
 /**
- * Dummy test class to make sure the setup method of the superclass executes correctly.
+ * Interface for data access code to be implemented manually.
  * 
  * @author Oliver Gierke
- * @since Step 1
  */
-public class DatabasePopulationIntegrationTest extends AbstractIntegrationTest {
+interface ProductRepositoryCustom {
 
-	@Test
-	public void populatesDatabaseCorrectly() {
-		System.out.println("Populating DataBase");
-	}
+	/**
+	 * Removes all {@link Product}s with a price greater than the given one.
+	 * 
+	 * @param price
+	 */
+	void removeProductsMoreExpensiveThan(BigDecimal price);
 }
