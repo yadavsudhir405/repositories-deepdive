@@ -44,6 +44,7 @@ public abstract class AbstractIntegrationTest {
 	@Before
 	public void populateDatabase() {
 		System.out.println("Populating database");
+
 		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 		populator.addScript(new ClassPathResource("data.sql"));
 		DatabasePopulatorUtils.execute(populator, dataSource);
