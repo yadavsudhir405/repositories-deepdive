@@ -27,6 +27,6 @@ public class DatabasePopulationIntegrationTest extends AbstractIntegrationTest {
 
 	@Test
 	public void populatesDatabaseCorrectly() {
-
+		System.out.println("Populating DataBase");
 	}
 }
